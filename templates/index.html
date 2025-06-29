@@ -1,0 +1,293 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ site_config.header_logo_text }}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+    <nav id="side-menu" class="side-menu">
+        <div class="menu-header">Меню</div>
+        <ul>
+            {% for item in menu_items %}
+            <li><a href="{{ item.link }}">{{ item.text }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
+
+    <div class="page-wrapper">
+        <header class="main-header">
+            <div class="logo">{{ site_config.header_logo_text }}</div>
+            <div id="text-carousel" class="carousel-text">
+                {% if header_carousel_texts %}<span>{{ header_carousel_texts.0 }}</span>{% endif %}
+            </div>
+            <div id="menu-toggle" class="menu-toggle"><i class="fa-solid fa-bars"></i></div>
+        </header>
+
+<main class="main-content">
+    <div class="hero-content-block" {% if backgrounds.ALIMONY %}style="background-image: linear-gradient(rgba(26, 26, 26, 0.8), rgba(26, 26, 26, 0.8)), url({{ backgrounds.HOME_BANER }});"{% endif %}>
+        
+        <h1 class="hero-title">{{ hero.title }}</h1>
+
+        <div class="actions">
+            <a href="{{ hero.button1_link }}" class="btn btn-outline">{{ hero.button1_text }}</a>
+            <a href="{{ hero.button2_link }}" class="btn btn-filled">{{ hero.button2_text }}</a>
+        </div>
+
+        <div class="contact-info">
+            <a href="tel:{{ hero.phone_number|cut:' ' }}">{{ hero.phone_number }}</a>
+        </div>
+
+    </div>
+
+<section id="divorce-info" class="service-section">
+    <div class="container">
+        <h2 class="section-title">{{ site_config.divorce_section_title }}</h2>
+        
+        {% if divorce_info %}
+        <div class="expandable-text-wrapper">
+            <div class="intro-text expandable">
+                {{ divorce_info.description|linebreaksbr }}
+            </div>
+            <button class="read-more-btn">Розгорнути</button>
+        </div>
+        {% endif %}
+
+        <h3 class="subsection-title">{{ site_config.packages_subtitle }}</h3>
+        <div class="packages-grid">
+            </div>
+        </div>
+</section>
+
+<section id="alimony-info" class="service-section" {% if backgrounds.ALIMONY %}style="background-image: linear-gradient(rgba(26, 26, 26, 0.8), rgba(26, 26, 26, 0.8)), url({{ backgrounds.ALIMONY }});"{% endif %}>
+    <div class="container">
+        <h2 class="section-title">{{ site_config.alimony_section_title }}</h2>
+        
+        {% if alimony_info %}
+            <hr class="dotted-divider">
+            <div class="expandable-text-wrapper">
+                <div class="intro-text expandable">
+                     {{ alimony_info.description|linebreaksbr }}
+                </div>
+                <button class="read-more-btn">Розгорнути</button>
+            </div>
+        {% endif %}
+
+        <h3 class="subsection-title">{{ site_config.packages_subtitle }}</h3>
+        <div class="packages-grid">
+            
+            {% for service in alimony_services %}
+            <div class="package-card">
+                {% if service.label %}
+                    <p class="package-label">{{ service.label }}</p>
+                {% endif %}
+                <h4 class="package-title">{{ service.title|linebreaksbr }}</h4>
+                <p class="package-price">{{ service.price|floatformat:"0" }} грн</p>
+                <a href="#" class="details-link">Детальніше</a>
+            </div>
+            {% endfor %}
+        </div>
+        
+        {% if site_config.alimony_fee_note %}
+            <p class="fee-note">{{ site_config.alimony_fee_note }}</p>
+            
+        {% endif %}
+                </div>
+                    <p class="fee-note">+ 1211,20 грн судовий збір, комісія банку та вартість пересилки документів</p>
+                </div>
+    </div>
+
+</section>
+            
+<section id="advantages" class="service-section">
+    <div class="container">
+        <h2 class="section-title">{{ site_config.advantages_section_title }}</h2>
+
+        <div class="advantages-grid">
+            
+            {% for advantage in advantages %}
+            <div class="advantage-card">
+                <div class="advantage-card-visible">
+                    <div class="advantage-icon" title="{{ advantage.title }}">
+                        <i class="fa-solid {{ advantage.icon_class }}"></i>
+                    </div>
+                    <h4 class="advantage-title">{{ advantage.title }}</h4>
+                </div>
+                
+                <div class="advantage-description-content">
+                    <p>{{ advantage.description }}</p>
+                </div>
+                
+                <button class="advantage-read-more">Детальніше</button>
+            </div>
+            {% endfor %}
+
+        </div>
+            <p>
+    </div>
+<section id="results" class="service-section">
+    <div class="container">
+        <p class="section-subtitle">{{ site_config.results_section_subtitle }}</p>
+        <h2 class="section-title">{{ site_config.results_section_title }}</h2>
+        
+        <div class="results-grid">
+            
+            {% for result in results %}
+            <a href="{{ result.case_url }}" target="_blank" class="case-card">
+                <div class="case-image-wrapper">
+                    <img src="{{ result.case_image.url }}" alt="{{ result.title }}">
+                </div>
+                <h4 class="case-title">{{ result.title }}</h4>
+            </a>
+            {% endfor %}
+            </div>
+
+        <div class="results-button-wrapper">
+            <button id="show-all-results-btn" class="btn btn-outline btn-rounded">{{ site_config.results_button_text }}</button>
+        </div>
+    </div>
+</section>
+
+            <section id="testimonials" class="promo-section" {% if backgrounds.TESTIMONIALS %}style="background-image: linear-gradient(rgba(26, 26, 26, 0.8), rgba(26, 26, 26, 0.8)), url({{ backgrounds.TESTIMONIALS }});"{% endif %}>
+                <div class="container">
+                    <h2 class="section-title">{{ site_config.testimonials_section_title }}</h2>
+                    <hr class="dotted-divider">
+                    <div class="testimonial-carousel-wrapper">
+                        <div class="testimonial-carousel">
+                            <div class="testimonial-carousel-track">
+                                {% for testimonial in testimonials %}
+                                <div class="testimonial-slide">
+                                    <p class="testimonial-text">"{{ testimonial.text }}"</p>
+                                    <p class="testimonial-author">- {{ testimonial.author }}</p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <button class="carousel-button prev"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="carousel-button next"><i class="fa-solid fa-chevron-right"></i></button>
+                        <div class="carousel-dots"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="algorithm" class="service-section">
+                <div class="container">
+                    <h2 class="section-title">{{ site_config.algorithm_section_title }}</h2>
+                    <div class="accordion">
+                        {% for step in algorithm_steps %}
+                        <div class="accordion-item">
+                            <button class="accordion-button">
+                                <span>{{ step.order }}. {{ step.title }}</span>
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                            <div class="accordion-content"><p>{{ step.description }}</p></div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+
+             <section id="bonuses" class="promo-section" {% if backgrounds.BONUSES %}style="background-image: linear-gradient(rgba(26, 26, 26, 0.8), rgba(26, 26, 26, 0.8)), url({{ backgrounds.BONUSES }});"{% endif %}>
+                <div class="container">
+                    <h2 class="section-title">{{ site_config.bonuses_section_title }}</h2>
+                    <div class="bonus-carousel-wrapper">
+                        <div class="bonus-carousel">
+                            <div class="bonus-carousel-track">
+                                {% for bonus in bonuses %}
+                                <div class="bonus-slide">
+                                    <div class="bonus-slide-content"><h4>{{ bonus.text }}</h4></div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <button class="carousel-button prev"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="carousel-button next"><i class="fa-solid fa-chevron-right"></i></button>
+                        <div class="carousel-dots"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="faq" class="service-section">
+                <div class="container">
+                    <h2 class="section-title">{{ site_config.faq_section_title }}</h2>
+                    <div class="accordion">
+                        {% for item in faqs %}
+                        <div class="accordion-item">
+                            <button class="accordion-button">
+                                <span>{{ item.question }}</span>
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                            <div class="accordion-content"><p>{{ item.answer }}</p></div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+
+            <section id="contact-section-bg" {% if backgrounds.CONTACT %}style="background-image: linear-gradient(rgba(26, 26, 26, 0.85), rgba(26, 26, 26, 0.85)), url({{ backgrounds.CONTACT }});"{% endif %}>
+                <div class="container">
+                    <div class="contact-form-card">
+                        <h3 class="form-title">{{ site_config.contact_form_title }}</h3>
+                        <p class="form-subtitle">{{ site_config.contact_form_subtitle|linebreaksbr }}</p>
+                        <form id="contact-form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="situation">Опишіть коротко свою ситуацію</label>
+                                <textarea id="situation" name="situation" rows="4" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Ваше ім’я</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Ваш номер телефону</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                            <button type="submit" class="btn btn-filled">Написати</button>
+                        </form>
+                        <div class="form-feedback"></div> </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="main-footer">
+            <div class="container">
+                <div class="footer-logo">{{ site_config.footer_logo_text }}</div>
+                <p class="footer-tagline">{{ site_config.footer_tagline|linebreaksbr }}</p>
+                <div class="footer-contacts">
+                    <h4 class="footer-heading">{{ site_config.footer_contacts_title }}</h4>
+                    <a href="tel:{{ site_config.footer_phone|cut:' ' }}">{{ site_config.footer_phone }}</a>
+                    <a href="mailto:{{ site_config.footer_email }}">{{ site_config.footer_email }}</a>
+                </div>
+                <div class="footer-cta-wrapper">
+                    <a href="{{ site_config.footer_cta_link }}" class="footer-cta">{{ site_config.footer_cta_text }}</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    {{ header_carousel_texts|json_script:"header-carousel-data" }}
+    
+    <script src="{% static 'js/script.js' %}"></script>
+    
+    <div class="fab-wrapper">
+        <ul class="fab-links">
+            <li><a href="https://t.me/your_telegram_username" target="_blank" class="fab-link fab-telegram" title="Telegram"><i class="fa-brands fa-telegram"></i></a></li>
+            <li><a href="viber://chat?number=%2B380684114220" target="_blank" class="fab-link fab-viber" title="Viber"><i class="fa-brands fa-viber"></i></a></li>
+            <li><a href="tel:+380684114220" class="fab-link fab-phone" title="Подзвонити"><i class="fa-solid fa-phone"></i></a></li>
+        </ul>
+        <button id="fab-toggle" class="fab-main-button">
+            <i class="fa-solid fa-comments icon-open"></i>
+            <i class="fa-solid fa-xmark icon-close"></i>
+        </button>
+    </div>
+
+</body>
+</html>

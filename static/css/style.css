@@ -1,0 +1,1508 @@
+/* --- Змінні та загальні стилі --- */
+
+:root {
+    --bg-color: #1a1a1a;
+    --text-color: #f0f0f0;
+    --accent-color: #ffcc00; 
+    --top-bar-text-color: #b3b3b3;
+    --font-heading: 'Montserrat', sans-serif;
+    --font-body: 'Lato', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    font-family: var(--font-body);
+    color: var(--text-color);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
+}
+
+/* --- Хедер --- */
+/* ▼▼▼ ЗАМІНІТЬ СТАРІ СТИЛІ ДЛЯ .main-header НА ЦІ ▼▼▼ */
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+
+    /* --- ОСНОВНІ ЗМІНИ ТУТ --- */
+    position: fixed; /* 'Пришпилює' хедер до верху екрана */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999; /* Високий z-index, щоб бути поверх контенту, але нижче висувного меню */
+
+    /* Додаємо фон, щоб контент не просвічувався при скролі */
+    background-color: rgba(26, 26, 26, 0.9);
+    backdrop-filter: blur(5px); /* Ефект "матового скла" для сучасності */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background-color 0.3s ease; 
+}
+
+/* ▲▲▲ КІНЕЦЬ ЗАМІНИ ▲▲▲ */
+.logo {
+    font-family: var(--font-heading);
+    font-size: 24px;
+    letter-spacing: 1px;
+}
+
+.menu-toggle {
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.menu-toggle:hover {
+    color: var(--accent-color);
+}
+
+#text-carousel {
+    text-align: center;
+}
+
+/* ▼▼▼ ЗАМІНІТЬ СТАРІ СТИЛІ ДЛЯ #text-carousel span НА ЦІ ▼▼▼ */
+
+#text-carousel span {
+    display: inline-block;
+    font-size: 34px;
+    font-family: var(--font-body);
+    letter-spacing: 1px;
+    text-transform: lowercase;
+    padding-bottom: 5px;
+    border-bottom: 1px solid; /* Колір тепер буде задавати анімація */
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+
+    /* Застосовуємо нашу нову анімацію */
+    animation: blinking-colors 2.5s ease-in-out infinite;
+}
+
+/* ▲▲▲ КІНЕЦЬ ЗАМІНИ ▲▲▲ */
+
+#text-carousel.fade-out span {
+    opacity: 0;
+}
+
+/* --- Висувне меню --- */
+.side-menu {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 300px;
+    height: 100%;
+    background-color: #222;
+    padding: 30px;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+    transition: right 0.4s ease-in-out;
+    z-index: 1000;
+}
+
+.side-menu.active {
+    right: 0;
+}
+
+.side-menu .menu-header {
+    font-family: var(--font-heading);
+    font-size: 28px;
+    margin-bottom: 40px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--accent-color);
+}
+
+.side-menu ul li {
+    margin-bottom: 25px;
+}
+
+.side-menu ul li a {
+    font-size: 18px;
+    transition: color 0.3s, padding-left 0.3s;
+}
+
+.side-menu ul li a:hover {
+    color: var(--accent-color);
+    padding-left: 10px;
+}
+
+/* --- Основний контент --- */
+.main-content {
+    padding: 0;
+}
+
+/* --- Банер (Hero Block) --- */
+/* Знайдіть цей блок у вашому css/style.css */
+.hero-content-block {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 180px 15% 0; 
+    text-align: center;
+
+    /* ▼▼▼ ЗМІНІТЬ ЦЕЙ РЯДОК ▼▼▼ */
+    background-image: linear-gradient(rgba(26, 26, 26, 0.7), rgba(26, 26, 26, 0.7)), url('../../media/backgrounds/зображення_viber_2025-06-24_07-23-53-593.jpg');
+    /* ▲▲▲ ТЕПЕР ШЛЯХ МАКСИМАЛЬНО ПРОСТИЙ ▲▲▲ */
+
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.hero-title {
+    font-family: var(--font-heading);
+    font-size: 3.5rem;
+    line-height: 1.2;
+    color: var(--text-color);
+    margin-bottom: 40px;
+    max-width: 800px;
+}
+
+/* --- Кнопки та контакти --- */
+.actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 28px;
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 14px;
+    min-width: 220px;
+    text-align: center;
+    border: 2px solid var(--accent-color);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: var(--accent-color);
+}
+
+.btn-outline:hover {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+}
+
+.btn-filled {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+}
+
+.btn-filled:hover {
+    background-color: transparent;
+    color: var(--accent-color);
+}
+
+.contact-info a {
+    font-size: 22px;
+    font-family: var(--font-heading);
+    letter-spacing: 1px;
+    transition: color 0.3s;
+}
+
+.contact-info a:hover {
+    color: var(--accent-color);
+}
+
+/* --- Футер --- */
+.main-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 40px 0;
+    margin-top: 60px; /* Додає відступ після контенту, якщо він є */
+    text-align: center;
+}
+
+/* --- Адаптивність (Media Queries) --- */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    .main-header {
+        padding: 15px 5%;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 1.8rem;
+    }
+    .actions {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    .btn {
+        width: 90%;
+        max-width: 300px;
+    }
+}
+
+
+/* --- Адаптивність (Media Queries) --- */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    .main-header {
+        padding: 15px 5%;
+    }
+}
+
+
+
+
+
+/* --- Секція Послуг (Нові стилі) --- */
+.service-section {
+    padding: 80px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.section-title {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 40px;
+    letter-spacing: 1px;
+}
+
+.intro-text {
+    max-width: 700px;
+    margin: 0 auto 50px auto;
+    text-align: center;
+    line-height: 1.7;
+    color: var(--top-bar-text-color);
+}
+
+.intro-text p {
+    margin-bottom: 15px;
+}
+
+.subsection-title {
+    font-family: var(--font-heading);
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    font-weight: 400;
+}
+
+.dotted-divider {
+    border: none;
+    border-top: 2px dotted rgba(255, 255, 255, 0.3);
+    margin: 30px auto 50px auto;
+    width: 200px;
+}
+
+/* --- Картки Пакетів --- */
+.packages-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.package-card {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 30px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.package-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-color);
+}
+
+.package-label {
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.package-title {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    font-weight: 700;
+    flex-grow: 1; /* Дозволяє заголовку займати вільне місце */
+}
+
+.package-price {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    color: var(--accent-color);
+    margin-bottom: 20px;
+}
+
+.details-link {
+    font-family: var(--font-body);
+    text-decoration: none;
+    border-bottom: 1px solid var(--top-bar-text-color);
+    padding-bottom: 5px;
+    align-self: center; /* Центрує посилання по горизонталі */
+    transition: border-color 0.3s ease;
+}
+
+.details-link:hover {
+    border-color: var(--accent-color);
+}
+
+.fee-note {
+    text-align: center;
+    margin-top: 30px;
+    padding: 15px;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
+}
+
+/* --- Адаптивність (Media Queries) --- */
+@media (max-width: 992px) { /* Додав ще одну точку для планшетів */
+    .packages-grid {
+        grid-template-columns: 1fr; /* На планшетах вже одна колонка */
+    }
+}
+
+@media (max-width: 768px) {
+    /* ... ваші існуючі стилі ... */
+    .section-title {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    /* ... ваші існуючі стилі ... */
+}
+
+
+/* --- Секція Переваг --- */
+/* ▼▼▼ ЗАМІНІТЬ СТАРІ СТИЛІ ДЛЯ ПЕРЕВАГ НА ЦІ ▼▼▼ */
+
+/* --- Секція Переваг (з ефектом розгортання) --- */
+/* ▼▼▼ ЗАМІНІТЬ СТАРІ СТИЛІ ДЛЯ ПЕРЕВАГ НА ЦІ ▼▼▼ */
+
+/* --- Секція Переваг (з ефектом розгортання) - Виправлена версія --- */
+/* ▼▼▼ ЗАМІНІТЬ СТАРІ СТИЛІ ДЛЯ ПЕРЕВАГ НА ЦІ ▼▼▼ */
+
+/* --- Секція Переваг (з ефектом акордеону) --- */
+.advantages-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    align-items: start; /* Не розтягуємо картки по висоті */
+}
+
+.advantage-card {
+    background-color: #222;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 30px 25px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    transition: all 0.4s ease;
+    min-height: 260px; /* Задаємо мінімальну висоту для всіх карток */
+}
+
+.advantage-card:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-5px);
+}
+
+.advantage-card-visible {
+    flex-grow: 1; /* Дозволяє цьому блоку займати весь доступний простір */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.advantage-icon {
+    font-size: 2.8rem;
+    color: var(--accent-color);
+    margin-bottom: 20px;
+    height: 45px;
+}
+
+.advantage-title {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    letter-spacing: 0.5px;
+}
+
+.advantage-description-content {
+    color: var(--top-bar-text-color);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    text-align: left;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, margin-top 0.4s ease-out, opacity 0.3s ease-out;
+    opacity: 0;
+}
+
+.advantage-card.is-expanded .advantage-description-content {
+    max-height: 1000px;
+    margin-top: 20px;
+    opacity: 1;
+}
+
+.advantage-read-more {
+    background: none;
+    border: none;
+    color: var(--accent-color);
+    font-family: var(--font-body);
+    font-weight: 700;
+    cursor: pointer;
+    padding: 5px;
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent-color);
+    margin-top: auto; /* Притискає кнопку до низу картки */
+    align-self: center; /* Центрує кнопку, якщо вона стає заширокою */
+}
+/* --- Адаптивність (Media Queries) --- */
+@media (max-width: 992px) {
+    /* ... ваші існуючі стилі ... */
+    .packages-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* ▼▼▼ ДОДАЙТЕ ЦЕ ▼▼▼ */
+    .advantages-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 колонки на планшетах */
+    }
+}
+
+@media (max-width: 768px) {
+    /* ... ваші існуючі стилі ... */
+}
+
+@media (max-width: 576px) { /* Додав ще одну точку для телефонів */
+    /* ▼▼▼ ДОДАЙТЕ ЦЕ ▼▼▼ */
+   .advantages-grid {
+        grid-template-columns: 1fr; /* 1 колонка на мобільних */
+    }
+}
+
+@media (max-width: 480px) {
+    /* ... ваші існуючі стилі ... */
+}
+
+
+/* ▼▼▼ ПОВНІСТЮ ЗАМІНІТЬ СТАРІ СТИЛІ ДЛЯ БОНУСІВ НА ЦІ ▼▼▼ */
+
+/* --- Секція Бонусів (Карусель) --- */
+.promo-section {
+    padding: 80px 0;
+    background-color: #222; /* Трохи інший фон для виділення */
+}
+
+.bonus-carousel-wrapper {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.bonus-carousel {
+    overflow: hidden; /* Найважливіша властивість для каруселі */
+}
+
+.bonus-carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.bonus-slide {
+    flex: 0 0 100%; /* Кожен слайд займає 100% ширини контейнера */
+    width: 100%;
+    padding: 40px;
+    box-sizing: border-box; /* Враховує padding у ширину */
+    text-align: center;
+}
+
+.bonus-slide h4 {
+    font-family: var(--font-heading);
+    color: var(--text-color);
+    font-size: 1.8rem;
+    border: 2px solid var(--accent-color);
+    padding: 40px 20px;
+    display: inline-block;
+    width: 100%;
+}
+
+/* Кнопки "Вперед/Назад" */
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-color);
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 10;
+}
+
+.carousel-button:hover {
+    background-color: var(--accent-color);
+}
+
+.carousel-button.prev {
+    left: -60px;
+}
+
+.carousel-button.next {
+    right: -60px;
+}
+
+/* Індикатори (крапки) */
+.carousel-dots {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.carousel-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.carousel-dot.active {
+    background-color: var(--accent-color);
+}
+
+/* ▲▲▲ КІНЕЦЬ ЗАМІНИ CSS ▲▲▲ */
+
+/* --- Акордеон --- */
+.accordion {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.accordion-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.accordion-item:last-child {
+    border-bottom: none;
+}
+
+.accordion-button {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    cursor: pointer;
+
+    /* Стилі для тексту кнопки */
+    color: var(--text-color);
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+}
+
+.accordion-button:hover {
+    color: var(--accent-color);
+}
+
+.accordion-button i {
+    font-size: 1rem;
+    color: var(--accent-color);
+    transition: transform 0.3s ease-in-out;
+}
+
+.accordion-content {
+    color: var(--top-bar-text-color);
+    line-height: 1.7;
+    overflow: hidden;
+    max-height: 0; /* Ховаємо контент за замовчуванням */
+    transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+}
+
+.accordion-content p {
+    padding-bottom: 20px;
+}
+
+/* Стилі для активного (відкритого) стану */
+.accordion-item.active .accordion-button i {
+    transform: rotate(45deg); /* Повертаємо плюсик у хрестик */
+}
+
+/* max-height має бути більшим за висоту контенту */
+.accordion-item.active .accordion-content {
+    max-height: 500px; 
+}
+
+
+
+/* ▼▼▼ ПОВНІСТЮ ЗАМІНІТЬ СТАРІ СТИЛІ ДЛЯ ФОРМИ НА ЦІ ▼▼▼ */
+
+/* --- Секція Контактної форми з фоном --- */
+#contact-section-bg {
+    position: relative;
+    padding: 100px 0;
+    
+    /* ВАЖЛИВО: 
+       Шлях '../img/contact-bg.jpg' означає:
+       1. вийти з папки 'css' (це роблять дві крапки ..)
+       2. зайти в папку 'img'
+       3. знайти файл 'contact-bg.jpg'
+    */
+    background-image: linear-gradient(rgba(26, 26, 26, 0.85), rgba(26, 26, 26, 0.85)), url('../img/contact-bg.jpg');
+    
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.contact-form-card {
+    background-color: rgba(26, 26, 26, 0.8);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 50px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* ... (решта стилів для .form-title, .form-group і т.д. залишаються такими ж) ... */
+
+.form-title {
+    font-family: var(--font-heading);
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: var(--text-color);
+}
+
+.form-subtitle {
+    text-align: center;
+    color: var(--top-bar-text-color);
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: var(--top-bar-text-color);
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 15px;
+    background-color: rgba(44, 44, 44, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    color: var(--text-color);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    background-color: #2c2c2c;
+}
+
+form .btn {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.thank-you-message {
+    text-align: center;
+    margin-top: 30px;
+    color: var(--accent-color);
+}
+
+.thank-you-message h4 {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
+
+/* ▲▲▲ КІНЕЦЬ ЗАМІНИ CSS ▲▲▲ */
+
+
+
+/* --- Стилі для фону секції Аліментів --- */
+#alimony-info {
+    padding: 100px 0;
+    position: relative; /* Потрібно для ефекту паралаксу */
+
+    /* ВАЖЛИВО: вкажіть тут шлях до вашого фонового зображення */
+    background-image: linear-gradient(rgba(26, 26, 26, 0.8), rgba(26, 26, 26, 0.8)), url('../img/contact-bg.jpg');
+    
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Створює ефект паралаксу */
+}
+
+/* Щоб текст на картках та нотатки читалися на фоні зображення,
+   робимо для них напівпрозорий фон, як ми робили для контактної форми.
+*/
+#alimony-info .package-card,
+#alimony-info .fee-note {
+    background-color: rgba(26, 26, 26, 0.7);
+    backdrop-filter: blur(4px);
+}
+
+/* Додамо рамку для нотатки, щоб вона виглядала краще на новому фоні */
+#alimony-info .fee-note {
+    border: 1px solid var(--accent-color);
+    border-radius: 4px; /* Трохи заокруглимо кути */
+}
+
+
+/* ▼▼▼ ПОВНІСТЮ ЗАМІНІТЬ СТАРІ СТИЛІ ДЛЯ БОНУСІВ НА ЦІ ▼▼▼ */
+
+/* --- Секція Бонусів з фоновим зображенням --- */
+#bonuses {
+    padding: 100px 0;
+    position: relative;
+
+    /* ВАЖЛИВО: вкажіть тут шлях до вашого фонового зображення */
+    background-image: linear-gradient(rgba(26, 26, 26, 0.8), rgba(26, 26, 26, 0.8)), url('../img/contact-bg.jpg');
+    
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Ефект паралаксу */
+}
+
+.bonus-carousel-wrapper {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.bonus-carousel {
+    overflow: hidden;
+}
+
+.bonus-carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.bonus-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    padding: 0 15px; /* Бокові відступи для самої картки */
+    box-sizing: border-box;
+    display: flex; /* Дозволяє картці всередині розтягуватися */
+}
+
+/* ОСНОВНІ ЗМІНИ ТУТ: тепер .bonus-slide-content є нашою карткою */
+.bonus-slide-content {
+    width: 100%;
+    min-height: 20px; /* Мінімальна висота для гарного вигляду */
+    display: flex; /* Вмикаємо flex для центрування тексту */
+    align-items: center; /* Центруємо по вертикалі */
+    justify-content: center; /* Центруємо по горизонталі */
+    text-align: center;
+    
+    /* Стилі картки */
+    background-color: rgba(26, 26, 26, 0.7);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 30px;
+    transition: border-color 0.3s ease;
+}
+
+.bonus-slide-content:hover {
+    border-color: var(--accent-color);
+}
+
+/* Тепер H4 - це просто текст, без стилів контейнера */
+.bonus-slide-content h4 {
+    font-family: var(--font-heading);
+    color: var(--text-color);
+    font-size: 1.8rem;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+
+/* Кнопки та індикатори залишаються майже без змін */
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-color);
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 10;
+}
+.carousel-button:hover { background-color: var(--accent-color); }
+.carousel-button.prev { left: -20px; }
+.carousel-button.next { right: -20px; }
+
+.carousel-dots { text-align: center; margin-top: 30px; }
+.carousel-dot { display: inline-block; width: 12px; height: 12px; background-color: rgba(255, 255, 255, 0.3); border-radius: 50%; margin: 0 5px; cursor: pointer; transition: background-color 0.3s ease; }
+.carousel-dot.active { background-color: var(--accent-color); }
+
+
+
+/* Кнопки "Вперед/Назад" - трохи змінимо позицію */
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-color);
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 10;
+}
+
+.carousel-button:hover {
+    background-color: var(--accent-color);
+}
+
+.carousel-button.prev {
+    left: -20px;
+}
+
+.carousel-button.next {
+    right: -20px;
+}
+
+@media (max-width: 992px) {
+    .carousel-button.prev {
+        left: -10px;
+    }
+    .carousel-button.next {
+        right: -10px;
+    }
+}
+
+
+/* Індикатори (крапки) */
+.carousel-dots {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.carousel-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.carousel-dot.active {
+    background-color: var(--accent-color);
+}
+
+/* ▲▲▲ КІНЕЦЬ ЗАМІНИ CSS ▲▲▲ */
+
+
+
+/* --- Секція Результатів --- */
+/* ▼▼▼ ПОВНІСТЮ ЗАМІНІТЬ СТАРІ СТИЛІ ДЛЯ РЕЗУЛЬТАТІВ НА ЦІ ▼▼▼ */
+
+/* --- Секція Результатів (у стилі карток) --- */
+/* ▼▼▼ ПОВНІСТЮ ЗАМІНІТЬ СТАРІ СТИЛІ ДЛЯ СЕКЦІЇ РІШЕНЬ НА ЦІ ▼▼▼ */
+
+/* --- Секція Рішень (Дизайн "Аркуші паперу") --- */
+.section-subtitle {
+    text-align: center;
+    font-family: var(--font-body);
+    color: var(--top-bar-text-color);
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px; /* Трохи збільшимо відстань між документами */
+    margin-bottom: 50px;
+}
+
+/* Тепер картка - це невидима обгортка-посилання */
+.case-card {
+    display: block;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+.case-card:hover {
+    transform: translateY(-8px); /* Збільшимо ефект підняття при наведенні */
+}
+
+/* Ми прибираємо стилі з обгортки зображення */
+.case-image-wrapper {
+    background-color: transparent;
+}
+
+/* А всі стилі застосовуємо до самого зображення */
+.case-image-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px; /* Заокруглені кути, як у аркуша */
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3); /* Тінь для ефекту об'єму */
+    
+    /* Прибираємо старі ефекти */
+    mix-blend-mode: normal;
+    filter: none;
+}
+
+/* Стилізуємо підпис під "аркушем" */
+.case-title {
+    padding: 25px 10px 10px 10px;
+    text-align: center;
+    font-family: var(--font-body);
+    font-weight: 700;
+    color: var(--top-bar-text-color); /* Робимо текст трохи тьмянішим */
+    background-color: transparent; /* Прибираємо фон */
+    transition: color 0.3s ease;
+}
+
+/* При наведенні на всю картку, підпис стає яскравішим */
+.case-card:hover .case-title {
+    color: var(--accent-color);
+}
+
+.results-button-wrapper {
+    text-align: center;
+}
+
+.btn-rounded {
+    border-radius: 30px;
+}
+
+.results-grid .case-card.is-hidden {
+    display: none;
+}
+
+/* Анімація плавної появи */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.case-card.is-visible {
+    /* Застосовуємо анімацію до карток, які з'являються */
+    animation: fadeIn 0.5s ease-out forwards;
+}
+/* ▲▲▲ КІНЕЦЬ ЗАМІНИ ▲▲▲ */
+
+/* ▲▲▲ КІНЕЦЬ ЗАМІНИ CSS ▲▲▲ */
+
+/* ▼▼▼ ПОВНІСТЮ ЗАМІНІТЬ СТАРІ СТИЛІ ДЛЯ ВІДГУКІВ НА ЦІ ▼▼▼ */
+
+/* --- Секція Відгуків з фоном --- */
+#testimonials {
+    padding: 100px 0;
+    position: relative;
+
+    /* ВАЖЛИВО: вкажіть тут шлях до вашого фонового зображення */
+    background-image: linear-gradient(rgba(26, 26, 26, 0.8), rgba(26, 26, 26, 0.8)), url('../img/image_126685.png');
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Ефект паралаксу */
+}
+
+.testimonial-carousel-wrapper {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.testimonial-carousel {
+    overflow: hidden;
+}
+
+.testimonial-carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.testimonial-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    padding: 20px 40px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.testimonial-text {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    font-style: italic;
+    color: var(--top-bar-text-color);
+    margin-bottom: 20px;
+}
+
+.testimonial-author {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+/* ▲▲▲ КІНЕЦЬ ЗАМІНИ CSS ▲▲▲ */
+
+
+/* --- Футер --- */
+.main-footer {
+    background-color: var(--bg-color);
+    padding: 60px 0;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-logo {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+.footer-tagline {
+    color: var(--top-bar-text-color);
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto 30px auto;
+}
+
+.footer-heading {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--top-bar-text-color);
+    margin-bottom: 15px;
+}
+
+.footer-contacts a {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.footer-contacts a:hover {
+    color: var(--accent-color);
+}
+
+.footer-cta-wrapper {
+    margin-top: 30px;
+}
+
+.footer-cta {
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 700;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.footer-cta:hover {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+}
+
+
+
+/* --- Адаптивність (Media Queries) --- */
+@media (max-width: 992px) {
+    /* ... ваші існуючі стилі ... */
+    .packages-grid {
+        grid-template-columns: 1fr;
+    }
+    .advantages-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* ▼▼▼ ДОДАЙТЕ ЦЕ ▼▼▼ */
+    .results-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 колонки на планшетах */
+    }
+}
+
+/* ... */
+
+@media (max-width: 576px) {
+   /* ... ваші існуючі стилі ... */
+   .advantages-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* ▼▼▼ ДОДАЙТЕ ЦЕ ▼▼▼ */
+    .results-grid {
+        grid-template-columns: 1fr; /* 1 колонка на мобільних */
+    }
+}
+
+
+/* --- Додаткові стилі для адаптивності каруселей --- */
+@media (max-width: 992px) {
+    /* Цей код вплине на ОБИДВІ каруселі (бонуси та відгуки) */
+
+    /* Повертаємо кнопки навігації всередину контейнера на планшетах та мобільних */
+    .carousel-button.prev {
+        left: 15px;
+    }
+    .carousel-button.next {
+        right: 15px;
+    }
+
+    /* Зменшуємо відступи для секцій з фоновим зображенням */
+    #bonuses,
+    #testimonials {
+        padding: 80px 0;
+    }
+}
+
+@media (max-width: 576px) {
+    /* Цей код стосується лише каруселі з бонусами на маленьких екранах */
+    #bonuses .bonus-slide h4 {
+        font-size: 1.5rem; /* Зменшуємо розмір заголовка */
+        padding: 50px 20px; /* Зменшуємо внутрішні відступи */
+    }
+    
+    /* Робимо кнопки трохи меншими на телефонах */
+    .carousel-button {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+
+
+/* --- Додаткові стилі для адаптивності каруселей --- */
+@media (max-width: 992px) {
+    /* ... існуючі правила ... */
+    
+    /* Повертаємо кнопки навігації всередину контейнера */
+    .carousel-button.prev {
+        left: 10px;
+    }
+    .carousel-button.next {
+        right: 10px;
+    }
+
+    /* ... існуючі правила ... */
+}
+
+/* --- Додаткові стилі для адаптивності каруселей --- */
+@media (max-width: 992px) {
+    /* ... ваші існуючі правила для .packages-grid та .advantages-grid ... */
+
+    /* ▼▼▼ ЗАМІНІТЬ СТАРІ ПРАВИЛА ДЛЯ КНОПОК НА ЦІ ▼▼▼ */
+    .bonus-slide-content {
+        min-height: 180px;
+        padding: 0px; /* <-- Відступи по 20px з усіх боків */
+    }
+
+    /* Створюємо місце для кнопок по боках від каруселі */
+    .bonus-carousel-wrapper,
+    .testimonial-carousel-wrapper {
+        padding: 0 39px; /* ВАЖЛИВО: додаємо бокові відступи */
+        position: relative;
+    }
+    
+    /* Розміщуємо кнопки у новому просторі */
+    .carousel-button.prev {
+        left: 0;
+    }
+    .carousel-button.next {
+        right: 0;
+    }
+
+    /* ▲▲▲ КІНЕЦЬ ЗАМІНИ ▲▲▲ */
+
+
+    /* Зменшуємо відступи для секцій з фоновим зображенням */
+    #bonuses,
+    #testimonials {
+        padding: 80px 0;
+    }
+}
+
+
+
+/* --- Анімація для миготіння тексту --- */
+@keyframes blinking-colors {
+    0%   {
+        color: var(--accent-color);
+        border-color: var(--accent-color);
+    }
+    50%  {
+        color: #ffcc00;
+        border-color: #ffcc00;
+    }
+    100% {
+        color: var(--accent-color);
+        border-color: var(--accent-color);
+    }
+}
+
+
+
+
+/* --- Плаваюча кнопка зв'язку (FAB) --- */
+.fab-wrapper {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fab-main-button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #1FAF38; /* Зелений колір, як на прикладі */
+    border: none;
+    color: white;
+    font-size: 26px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    position: relative; /* Для позиціонування іконок всередині */
+    overflow: hidden; /* Для гарної зміни іконок */
+    animation: fab-pulse 2s infinite;
+    order: 2; /* Завжди внизу */
+    margin-top: 15px;
+}
+
+/* Анімація пульсації */
+@keyframes fab-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(31, 175, 56, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(31, 175, 56, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(31, 175, 56, 0);
+    }
+}
+
+/* Іконки всередині головної кнопки */
+.fab-main-button .icon-open,
+.fab-main-button .icon-close {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.fab-main-button .icon-close {
+    transform: translate(-50%, -50%) scale(0) rotate(-90deg);
+}
+
+.fab-wrapper.active .fab-main-button .icon-open {
+    transform: translate(-50%, -50%) scale(0) rotate(90deg);
+}
+
+.fab-wrapper.active .fab-main-button .icon-close {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+}
+
+/* Посилання на соцмережі */
+.fab-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    order: 1; /* Розміщуються над головною кнопкою */
+}
+
+.fab-links li {
+    margin-bottom: 12px;
+    transform: scale(0);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Анімація появи посилань */
+.fab-wrapper.active .fab-links li {
+    transform: scale(1);
+    opacity: 1;
+}
+/* Затримка для появи "один за одним" */
+.fab-wrapper.active .fab-links li:nth-child(1) { transition-delay: 0.2s; }
+.fab-wrapper.active .fab-links li:nth-child(2) { transition-delay: 0.1s; }
+.fab-wrapper.active .fab-links li:nth-child(3) { transition-delay: 0.0s; }
+
+
+.fab-link {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 22px;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease;
+}
+.fab-link:hover {
+    transform: scale(1.1);
+}
+
+/* Кольори для кнопок */
+.fab-telegram { background-color: #0088cc; }
+.fab-viber { background-color: #7360f2; }
+.fab-phone { background-color: #4CAF50; }
+
+
+
+/* --- Стилі для тексту, що розгортається --- */
+.expandable-text-wrapper {
+    max-width: 700px;
+    margin: 0 auto 50px auto;
+    text-align: center;
+}
+
+.intro-text.expandable {
+    max-height: 105px; /* Висота згорнутого тексту (підберіть, як вам подобається) */
+    overflow: hidden;
+    position: relative;
+    transition: max-height 0.5s ease-in-out;
+}
+
+/* Створює ефект "згасання" внизу тексту, натякаючи, що є продовження */
+.intro-text.expandable::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(to bottom, transparent, var(--bg-color));
+    transition: opacity 0.3s ease;
+}
+
+/* Стилі для розгорнутого стану */
+.intro-text.expandable.expanded {
+    max-height: 1000px; /* Велика висота, щоб вмістити весь текст */
+}
+
+.intro-text.expandable.expanded::after {
+    opacity: 0; /* Ховаємо ефект "згасання" */
+}
+
+/* Стиль для кнопки */
+.read-more-btn {
+    background: none;
+    border: 1px solid var(--accent-color);
+    border-radius: 4px;
+    color: var(--accent-color);
+    cursor: pointer;
+    padding: 8px 16px;
+    margin-top: 20px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.read-more-btn:hover {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+}
+
+
+/* В кінці файлу css/style.css */
+
+@media (max-width: 992px) {
+    /* ... існуючі правила ... */
+    
+    .advantages-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 колонки на планшетах */
+    }
+}
+
+
+@media (max-width: 576px) {
+   /* ... існуючі правила ... */
+
+   .advantages-grid {
+        grid-template-columns: 1fr; /* 1 колонка на мобільних */
+    }
+}
