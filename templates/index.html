@@ -60,7 +60,7 @@
         {% if divorce_info %}
         <div class="expandable-text-wrapper">
             <div class="intro-text expandable">
-                {{ divorce_info.description|linebreaksbr }}
+                {{ divorce_info.description|safe }}
             </div>
             <button class="read-more-btn">Розгорнути</button>
         </div>
@@ -93,7 +93,7 @@
         {% if alimony_info %}
             <div class="expandable-text-wrapper">
                 <div class="intro-text expandable">
-                     {{ alimony_info.description|linebreaksbr }}
+                     {{ alimony_info.description|safe }}
                 </div>
                 <button class="read-more-btn">Розгорнути</button>
             </div>
@@ -154,7 +154,7 @@
 
 <section id="results" class="service-section">
     <div class="container">
-        <p class="section-subtitle">{{ site_config.results_section_subtitle }}</p>
+
         <h2 class="section-title">{{ site_config.results_section_title }}</h2>
         
         <div class="results-grid">
@@ -209,7 +209,7 @@
                                 <span>{{ step.order }}. {{ step.title }}</span>
                                 <i class="fa-solid fa-plus"></i>
                             </button>
-                            <div class="accordion-content"><p>{{ step.description }}</p></div>
+                            <div class="accordion-content"><p>{{ step.description|safe }}</p></div>
                         </div>
                         {% endfor %}
                     </div>
@@ -224,7 +224,15 @@
                             <div class="bonus-carousel-track">
                                 {% for bonus in bonuses %}
                                 <div class="bonus-slide">
-                                    <div class="bonus-slide-content"><h4>{{ bonus.text }}</h4></div>
+                                    <div class="bonus-slide-content">
+                                        <h4 class="bonus-title">{{ bonus.text }}</h4>
+                                        {% if bonus.description %}
+                                            <button class="bonus-read-more" onclick="toggleBonusDetails(this)">Детальніше</button>
+                                            <div class="bonus-description-content">{{ bonus.description|safe }}</div>
+                                        {% else %}
+                                            <button class="bonus-read-more" disabled style="opacity:0.5;cursor:not-allowed;">Детальніше</button>
+                                        {% endif %}
+                                    </div>
                                 </div>
                                 {% endfor %}
                             </div>
@@ -246,7 +254,7 @@
                                 <span>{{ item.question }}</span>
                                 <i class="fa-solid fa-plus"></i>
                             </button>
-                            <div class="accordion-content"><p>{{ item.answer }}</p></div>
+                            <div class="accordion-content"><p>{{ item.answer|safe }}</p></div>
                         </div>
                         {% endfor %}
                     </div>

@@ -79,11 +79,37 @@ document.addEventListener('DOMContentLoaded', function() {
     advantageReadMoreButtons.forEach(button => {
         button.addEventListener('click', () => {
             const card = button.closest('.advantage-card');
+            const desc = card.querySelector('.advantage-description-content');
             if (card.classList.contains('expanded')) {
                 card.classList.remove('expanded');
                 button.textContent = 'Детальніше';
+                if (desc) {
+                    desc.style.maxHeight = '';
+                    desc.style.height = '';
+                    desc.style.overflow = '';
+                }
             } else {
                 card.classList.add('expanded');
+                button.textContent = 'Згорнути';
+                if (desc) {
+                    desc.style.maxHeight = 'none';
+                    desc.style.height = 'auto';
+                    desc.style.overflow = 'visible';
+                }
+            }
+        });
+    });
+
+    // --- Логіка для розгортання бонусу ---
+    const bonusReadMoreButtons = document.querySelectorAll('.bonus-read-more');
+    bonusReadMoreButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const slide = button.closest('.bonus-slide');
+            if (slide.classList.contains('expanded')) {
+                slide.classList.remove('expanded');
+                button.textContent = 'Детальніше';
+            } else {
+                slide.classList.add('expanded');
                 button.textContent = 'Згорнути';
             }
         });
@@ -218,6 +244,42 @@ document.addEventListener('DOMContentLoaded', function() {
                 showAllResultsBtn.style.display = 'none';
             }
         });
+    }
+
+    function togglePackageDetails(btn) {
+        const card = btn.closest('.package-card');
+        if (card.classList.contains('is-expanded')) {
+            card.classList.remove('is-expanded');
+            btn.textContent = 'Детальніше';
+            return;
+        }
+        // Згортаємо всі інші картки
+        document.querySelectorAll('.package-card.is-expanded').forEach(c => {
+            c.classList.remove('is-expanded');
+            const b = c.querySelector('.package-read-more');
+            if (b) b.textContent = 'Детальніше';
+        });
+        // Розгортаємо поточну
+        card.classList.add('is-expanded');
+        btn.textContent = 'Згорнути';
+    }
+    window.togglePackageDetails = togglePackageDetails;
+
+    function toggleBonusDetails(btn) {
+        const slide = btn.closest('.bonus-slide');
+        if (slide.classList.contains('expanded')) {
+            slide.classList.remove('expanded');
+            btn.textContent = 'Детальніше';
+        } else {
+            // Згортаємо всі інші слайди
+            document.querySelectorAll('.bonus-slide.expanded').forEach(s => {
+                s.classList.remove('expanded');
+                const b = s.querySelector('.bonus-read-more');
+                if (b) b.textContent = 'Детальніше';
+            });
+            slide.classList.add('expanded');
+            btn.textContent = 'Згорнути';
+        }
     }
 
 });

@@ -197,36 +197,42 @@ ul {
 
 .btn {
     display: inline-block;
-    padding: 12px 28px;
+    padding: 12px 32px;
     font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.05rem;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
     text-transform: uppercase;
     letter-spacing: 1px;
-    font-size: 14px;
-    min-width: 220px;
-    text-align: center;
-    border: 2px solid var(--accent-color);
-    transition: all 0.3s ease;
-    cursor: pointer;
+    box-shadow: none;
+    outline: none;
 }
 
 .btn-outline {
-    background-color: transparent;
+    background: #181818;
     color: var(--accent-color);
+    border: 2px solid var(--accent-color);
 }
 
-.btn-outline:hover {
-    background-color: var(--accent-color);
-    color: var(--bg-color);
+.btn-outline:hover, .btn-outline:focus {
+    background: var(--accent-color);
+    color: #181818;
+    border: 2px solid var(--accent-color);
 }
 
 .btn-filled {
-    background-color: var(--accent-color);
-    color: var(--bg-color);
+    background: var(--accent-color);
+    color: #181818;
+    border: 2px solid var(--accent-color);
 }
 
-.btn-filled:hover {
-    background-color: transparent;
+.btn-filled:hover, .btn-filled:focus {
+    background: #181818;
     color: var(--accent-color);
+    border: 2px solid var(--accent-color);
 }
 
 .contact-info a {
@@ -368,15 +374,25 @@ ul {
 }
 
 .intro-text {
-    max-width: 700px;
-    margin: 0 auto 50px auto;
-    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 900px;
     line-height: 1.7;
     color: var(--top-bar-text-color);
+    font-size: 1.15rem;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .intro-text p {
-    margin-bottom: 15px;
+    text-indent: 2em;
+    margin-top: 0.7em;
+    margin-bottom: 0.7em;
+    margin-left: 0;
+    margin-right: 0;
+    line-height: 1.7;
 }
 
 .subsection-title {
@@ -563,7 +579,7 @@ ul {
 }
 
 .advantage-card-visible {
-    flex-grow: 1; /* Дозволяє цьому блоку займати весь доступний простір */
+    flex-grow: 0 !important;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -593,10 +609,18 @@ ul {
     opacity: 0;
 }
 
-.advantage-card.is-expanded .advantage-description-content {
-    max-height: 1000px;
-    margin-top: 20px;
-    opacity: 1;
+.advantage-card.is-expanded,
+.advantage-card.is-expanded .advantage-description-content,
+.advantage-card.is-expanded .advantage-description-content * {
+    max-height: none !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+    flex-grow: 0 !important;
+    flex-shrink: 0 !important;
+    flex-basis: auto !important;
+    white-space: normal !important;
 }
 
 .advantage-read-more {
@@ -968,122 +992,78 @@ form .btn {
 
 /* ОСНОВНІ ЗМІНИ ТУТ: тепер .bonus-slide-content є нашою карткою */
 .bonus-slide-content {
+    background: rgba(26, 26, 26, 0.95);
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+    padding: 32px 28px 24px 28px;
+    max-width: 370px;
+    min-width: 270px;
     width: 100%;
-    min-height: 60px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    margin: 0 auto;
+    position: relative;
+    transition: box-shadow 0.2s;
     text-align: center;
-    background: rgba(26, 26, 26, 0.7);
-    backdrop-filter: blur(8px);
-    border: 1.5px solid rgba(255,255,255,0.18);
-    border-radius: 12px;
-    padding: 40px 30px;
-    box-shadow: 0 4px 32px rgba(0,0,0,0.12);
-    transition: border-color 0.3s;
 }
-
 .bonus-slide-content:hover {
-    border-color: var(--accent-color);
+    box-shadow: 0 8px 32px rgba(255,204,0,0.12);
 }
-
-/* Тепер H4 - це просто текст, без стилів контейнера */
-.bonus-slide-content h4 {
+.bonus-title {
     font-family: var(--font-heading);
-    color: var(--text-color);
-    font-size: 1.8rem;
-    margin: 0;
-    padding: 0;
-    border: none;
-    background: none;
-}
-
-
-/* Кнопки та індикатори залишаються майже без змін */
-.carousel-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: var(--text-color);
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    z-index: 10;
-}
-.carousel-button:hover { background-color: var(--accent-color); }
-.carousel-button.prev { left: -20px; }
-.carousel-button.next { right: -20px; }
-
-.carousel-dots { text-align: center; margin-top: 30px; }
-.carousel-dot { display: inline-block; width: 12px; height: 12px; background-color: rgba(255, 255, 255, 0.3); border-radius: 50%; margin: 0 5px; cursor: pointer; transition: background-color 0.3s ease; }
-.carousel-dot.active { background-color: var(--accent-color); }
-
-
-
-/* Кнопки "Вперед/Назад" - трохи змінимо позицію */
-.carousel-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: var(--text-color);
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    z-index: 10;
-}
-
-.carousel-button:hover {
-    background-color: var(--accent-color);
-}
-
-.carousel-button.prev {
-    left: -20px;
-}
-
-.carousel-button.next {
-    right: -20px;
-}
-
-@media (max-width: 992px) {
-    .carousel-button.prev {
-        left: -10px;
-    }
-    .carousel-button.next {
-        right: -10px;
-    }
-}
-
-
-/* Індикатори (крапки) */
-.carousel-dots {
+    font-size: 1.35rem;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 18px;
     text-align: center;
-    margin-top: 30px;
 }
-
-.carousel-dot {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    margin: 0 5px;
+.bonus-read-more {
+    display: block;
+    margin: 0 auto 0 auto;
+    margin-top: 18px;
+    padding: 10px 32px;
+    background: #111;
+    color: var(--accent-color);
+    border: 2px solid var(--accent-color);
+    border-radius: 24px;
+    font-weight: bold;
+    font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background 0.2s, color 0.2s;
 }
-
-.carousel-dot.active {
-    background-color: var(--accent-color);
+.bonus-read-more[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
-
-/* ▲▲▲ КІНЕЦЬ ЗАМІНИ CSS ▲▲▲ */
+.bonus-read-more:hover:enabled {
+    background: var(--accent-color);
+    color: #111;
+}
+.bonus-description-content {
+    display: none;
+    margin-top: 18px;
+    color: #fff;
+    font-size: 1.08rem;
+    text-align: left;
+    width: 100%;
+    background: rgba(34,34,34,0.92);
+    border-radius: 12px;
+    padding: 16px 14px;
+    box-sizing: border-box;
+}
+.bonus-slide.expanded .bonus-description-content {
+    display: block;
+}
+@media (max-width: 768px) {
+    .bonus-slide-content {
+        max-width: 98vw;
+        min-width: 0;
+        padding: 22px 8px 18px 8px;
+    }
+}
+/* Прибираю старі стилі карток бонусів */
+.bonus-cards-grid, .bonus-card, .bonus-card-visible { display: none !important; }
 
 
 
@@ -1776,4 +1756,111 @@ form .btn {
     outline: none;
     border-color: var(--accent-color);
     background-color: #2c2c2c;
+}
+
+.bonus-read-more {
+    align-self: center;
+    margin: 18px 0 0 0;
+}
+
+.bonus-description-content {
+    width: 100%;
+    margin-top: 18px;
+    color: var(--top-bar-text-color);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    text-align: left;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, margin-top 0.4s ease-out, opacity 0.3s ease-out;
+    opacity: 0;
+}
+.bonus-slide.expanded .bonus-description-content {
+    max-height: 1000px;
+    margin-top: 20px;
+    opacity: 1;
+    overflow: visible;
+}
+
+/* === Бонуси: сучасна картка === */
+.bonus-cards-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    justify-content: center;
+    margin-top: 32px;
+}
+.bonus-card {
+    background: rgba(26, 26, 26, 0.95);
+    border: 2px solid var(--accent-color);
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+    padding: 32px 28px 24px 28px;
+    max-width: 370px;
+    min-width: 270px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 16px;
+    position: relative;
+    transition: box-shadow 0.2s;
+}
+.bonus-card:hover {
+    box-shadow: 0 8px 32px rgba(255,204,0,0.12);
+}
+.bonus-card-visible {
+    width: 100%;
+    text-align: center;
+}
+.bonus-title {
+    font-family: var(--font-heading);
+    font-size: 1.35rem;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 18px;
+    text-align: center;
+}
+.bonus-read-more {
+    display: block;
+    margin: 0 auto 0 auto;
+    margin-top: 18px;
+    padding: 10px 32px;
+    background: #111;
+    color: var(--accent-color);
+    border: 2px solid var(--accent-color);
+    border-radius: 24px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+.bonus-read-more:hover {
+    background: var(--accent-color);
+    color: #111;
+}
+.bonus-description-content {
+    display: none;
+    margin-top: 18px;
+    color: #fff;
+    font-size: 1.08rem;
+    text-align: left;
+    width: 100%;
+    background: rgba(34,34,34,0.92);
+    border-radius: 12px;
+    padding: 16px 14px;
+    box-sizing: border-box;
+}
+.bonus-slide.expanded .bonus-description-content {
+    display: block;
+}
+@media (max-width: 768px) {
+    .bonus-cards-grid {
+        gap: 18px;
+    }
+    .bonus-card {
+        max-width: 98vw;
+        min-width: 0;
+        padding: 22px 8px 18px 8px;
+    }
 }

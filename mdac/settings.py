@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['mdac-73749563213.europe-west3.run.app', 'rozluchennia-alimenty
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'solo',
-    'main'
+    'main',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -129,3 +131,58 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+JAZZMIN_SETTINGS = {
+    "site_title": "MDAC Admin",
+    "site_header": "MDAC Адмінка",
+    "site_brand": "MDAC",
+    "welcome_sign": "Вітаємо в адмінці MDAC!",
+    "copyright": "MDAC",
+    "search_model": ["main.Service", "main.ContactRequest"],
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "icons": {
+        "main.Service": "fas fa-briefcase",
+        "main.ContactRequest": "fas fa-envelope",
+        "main.SiteConfiguration": "fas fa-cogs",
+        "main.HeroBanner": "fas fa-image",
+        "main.MenuItem": "fas fa-bars",
+        "main.SectionBackground": "fas fa-paint-brush",
+        "main.Advantage": "fas fa-star",
+        "main.Testimonial": "fas fa-comment",
+        "main.AlgorithmStep": "fas fa-list-ol",
+        "main.FAQ": "fas fa-question-circle",
+        "main.Bonus": "fas fa-gift",
+        "main.ServiceCategoryDescription": "fas fa-tags",
+        "main.Result": "fas fa-check-circle",
+    },
+    "default_icon_parents": "fas fa-folder-open",
+    "default_icon_children": "fas fa-dot-circle",
+    "order_with_respect_to": [
+        "main.SiteConfiguration",
+        "main.HeroBanner",
+        "main.MenuItem",
+        "main.Service",
+        "main.ServiceCategoryDescription",
+        "main.Advantage",
+        "main.Result",
+        "main.Testimonial",
+        "main.AlgorithmStep",
+        "main.FAQ",
+        "main.Bonus",
+        "main.SectionBackground",
+        "main.ContactRequest",
+    ],
+    # "site_logo": "logos/your_logo.png",  # Розкоментуйте і вкажіть шлях до вашого лого, якщо потрібно
+    # "site_icon": "logos/your_logo.png",  # favicon
+    # "custom_css": "css/my_admin.css",   # Додайте власний CSS, якщо потрібно
+}
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': '100%',
+        'language': 'uk',
+    },
+}

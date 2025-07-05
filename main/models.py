@@ -1,5 +1,6 @@
 from django.db import models
 from solo.models import SingletonModel
+from ckeditor.fields import RichTextField
 
 class SiteConfiguration(SingletonModel):
     header_logo_text = models.CharField(max_length=50, default="ЛОГОТИП", verbose_name="Текст логотипу в хедері")
@@ -34,8 +35,8 @@ class SiteConfiguration(SingletonModel):
         return "Налаштування Сайту"
 
     class Meta:
-        verbose_name = "0. Налаштування Сайту"
-        verbose_name_plural = "0. Налаштування Сайту"
+        verbose_name = "Налаштування Сайту"
+        verbose_name_plural = "Налаштування Сайту"
 
 
 # --- Інші моделі ---
@@ -49,8 +50,8 @@ class MenuItem(models.Model):
         return self.text
 
     class Meta:
-        verbose_name = "1. Пункт меню"
-        verbose_name_plural = "1. Пункти меню"
+        verbose_name = "Пункт меню"
+        verbose_name_plural = "Пункти меню"
         ordering = ['order']
 
 class HeroBanner(SingletonModel): 
@@ -64,8 +65,8 @@ class HeroBanner(SingletonModel):
     def __str__(self):
         return "Головний банер"
     class Meta:
-        verbose_name = "1. Головний банер"
-        verbose_name_plural = "1. Головний банер"
+        verbose_name = "Головний банер"
+        verbose_name_plural = "Головний банер"
 
 
 class SectionBackground(models.Model):
@@ -81,8 +82,8 @@ class SectionBackground(models.Model):
     def __str__(self):
         return self.get_name_display()
     class Meta:
-        verbose_name = "2. Фонове зображення секції"
-        verbose_name_plural = "2. Фонові зображення секцій"
+        verbose_name = "Фонове зображення секції"
+        verbose_name_plural = "Фонові зображення секцій"
 
 class Service(models.Model):
     CATEGORY_CHOICES = [('DIVORCE', 'Розірвання шлюбу'), ('ALIMONY', 'Стягнення аліментів')]
@@ -96,17 +97,17 @@ class Service(models.Model):
         return f"{self.get_category_display()} - {self.title}"
     class Meta:
         verbose_name = "3. Послуга"
-        verbose_name_plural = "3. Послуги"
+        verbose_name_plural = "Послуги"
         ordering = ['order']
 
 class ServiceCategoryInfo(models.Model):
     category = models.CharField(max_length=10, choices=Service.CATEGORY_CHOICES, unique=True, verbose_name="Категорія")
-    description = models.TextField(verbose_name="Описовий текст для секції")
+    description = RichTextField(verbose_name="Описовий текст для секції")
     def __str__(self):
         return f"Опис для категорії: {self.get_category_display()}"
     class Meta:
-        verbose_name = "3.1. Опис категорії послуг"
-        verbose_name_plural = "3.1. Описи категорій послуг"
+        verbose_name = "Опис категорії послуг"
+        verbose_name_plural = "Описи категорій послуг"
 
 class Advantage(models.Model):
     title = models.CharField(max_length=100, verbose_name="Назва переваги")
@@ -116,8 +117,8 @@ class Advantage(models.Model):
     def __str__(self):
         return self.title
     class Meta:
-        verbose_name = "4. Перевага"
-        verbose_name_plural = "4. Переваги"
+        verbose_name = "Перевага"
+        verbose_name_plural = "Переваги"
         ordering = ['order']
 
 class Result(models.Model):
@@ -128,8 +129,8 @@ class Result(models.Model):
     def __str__(self):
         return self.title
     class Meta:
-        verbose_name = "5. Рішення (Результат)"
-        verbose_name_plural = "5. Рішення (Результати)"
+        verbose_name = "Рішення (Результат)"
+        verbose_name_plural = "Рішення (Результати)"
         ordering = ['order']
 
 class Testimonial(models.Model):
@@ -140,35 +141,36 @@ class Testimonial(models.Model):
     def __str__(self):
         return f"Відгук від {self.author}"
     class Meta:
-        verbose_name = "6. Відгук"
-        verbose_name_plural = "6. Відгуки"
+        verbose_name = "Відгук"
+        verbose_name_plural = "Відгуки"
         ordering = ['order']
 
 class AlgorithmStep(models.Model):
     title = models.CharField(max_length=200, verbose_name="Назва кроку")
-    description = models.TextField(verbose_name="Опис кроку")
+    description = RichTextField(verbose_name="Опис кроку")
     order = models.PositiveIntegerField(default=0, verbose_name="Номер кроку (порядок)")
     def __str__(self):
         return self.title
     class Meta:
-        verbose_name = "7. Крок алгоритму"
-        verbose_name_plural = "7. Кроки алгоритму"
+        verbose_name = "Крок алгоритму"
+        verbose_name_plural = "Кроки алгоритму"
         ordering = ['order']
 
 class FAQ(models.Model):
     question = models.CharField(max_length=255, verbose_name="Питання")
-    answer = models.TextField(verbose_name="Відповідь")
+    answer = RichTextField(verbose_name="Відповідь")
     order = models.PositiveIntegerField(default=0, verbose_name="Порядок сортування")
     is_published = models.BooleanField(default=True, verbose_name="Опубліковано")
     def __str__(self):
         return self.question
     class Meta:
-        verbose_name = "8. Часте запитання"
-        verbose_name_plural = "8. Часті запитання"
+        verbose_name = "Часте запитання"
+        verbose_name_plural = "Часті запитання"
         ordering = ['order']
 
 class Bonus(models.Model):
     text = models.CharField(max_length=200, verbose_name="Текст акції / бонусу")
+    description = RichTextField(blank=True, null=True, verbose_name="Детальний опис бонусу")
     order = models.PositiveIntegerField(default=0, verbose_name="Порядок сортування")
     is_active = models.BooleanField(default=True, verbose_name="Активна")
     def __str__(self):
@@ -187,6 +189,6 @@ class ContactRequest(models.Model):
     def __str__(self):
         return f"Заявка від {self.name} ({self.phone_number})"
     class Meta:
-        verbose_name = "10. Заявка з сайту"
-        verbose_name_plural = "10. Заявки з сайту"
+        verbose_name = "Заявка з сайту"
+        verbose_name_plural = "Заявки з сайту"
         ordering = ['-created_at']
