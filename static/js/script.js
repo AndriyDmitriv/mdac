@@ -1,13 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     // --- Логіка для текстової каруселі в хедері ---
-    try {
-        const carouselData = JSON.parse(document.getElementById('header-carousel-data').textContent);
+    const carouselDataElement = document.getElementById('header-carousel-data');
+    if (carouselDataElement) {
+        const carouselItems = JSON.parse(carouselDataElement.textContent);
         const carouselTextElement = document.querySelector('#text-carousel span');
-        if (carouselTextElement && carouselData.length > 0) {
-            let carouselItems = carouselData;
+        if (carouselTextElement && carouselItems.length > 0) {
             let currentItemIndex = 0;
-            
             setInterval(() => {
                 if (carouselTextElement.parentElement) {
                     carouselTextElement.parentElement.classList.add('fade-out');
@@ -21,8 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 500);
             }, 3000);
         }
-    } catch (e) {
-        console.info("Header carousel data not found, will use static data if available.");
     }
 
     // --- Логіка для висувного меню ---
@@ -44,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- Логіка для Акордеону (Алгоритм та FAQ) ---
+    // --- Логіка для Акордеону ---
     const accordionItems = document.querySelectorAll('.accordion-item');
     if (accordionItems.length > 0) {
         accordionItems.forEach(item => {
@@ -52,16 +49,45 @@ document.addEventListener('DOMContentLoaded', function() {
             if (button) {
                 button.addEventListener('click', () => {
                     const wasActive = item.classList.contains('active');
-                    accordionItems.forEach(i => {
-                        if (i !== item) {
-                           i.classList.remove('active');
-                        }
-                    });
-                    item.classList.toggle('active');
+                    accordionItems.forEach(i => i.classList.remove('active'));
+                    if (!wasActive) {
+                        item.classList.add('active');
+                    }
                 });
             }
         });
     }
+
+    // --- Логіка для розгортання тексту ---
+    const readMoreButtons = document.querySelectorAll('.read-more-btn');
+    readMoreButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const wrapper = button.closest('.expandable-text-wrapper');
+            const expandableText = wrapper.querySelector('.expandable');
+            if (wrapper.classList.contains('expanded')) {
+                wrapper.classList.remove('expanded');
+                button.textContent = 'Розгорнути';
+            } else {
+                wrapper.classList.add('expanded');
+                button.textContent = 'Згорнути';
+            }
+        });
+    });
+
+    // --- Логіка для карток переваг ---
+    const advantageReadMoreButtons = document.querySelectorAll('.advantage-read-more');
+    advantageReadMoreButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const card = button.closest('.advantage-card');
+            if (card.classList.contains('expanded')) {
+                card.classList.remove('expanded');
+                button.textContent = 'Детальніше';
+            } else {
+                card.classList.add('expanded');
+                button.textContent = 'Згорнути';
+            }
+        });
+    });
 
     // --- УНІВЕРСАЛЬНА функція для ініціалізації каруселей ---
     function initCarousel(wrapperSelector) {
@@ -76,18 +102,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!track || !nextButton || !prevButton || !dotsNav) return;
         
         const slides = Array.from(track.children);
-        if (slides.length <= 1) {
-            nextButton.style.display = 'none';
-            prevButton.style.display = 'none';
-            dotsNav.style.display = 'none';
-            return;
-        };
+        if (slides.length === 0) return;
 
-        let slideWidth = slides.length > 0 ? slides[0].getBoundingClientRect().width : 0;
+        let slideWidth = slides[0].getBoundingClientRect().width;
         let currentIndex = 0;
         let autoPlayInterval;
 
-        dotsNav.innerHTML = '';
+        dotsNav.innerHTML = ''; // Очищуємо, щоб не було дублів
         slides.forEach((slide, index) => {
             const dot = document.createElement('button');
             dot.classList.add('carousel-dot');
@@ -126,167 +147,75 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         window.addEventListener('resize', () => {
-            slideWidth = slides.length > 0 ? slides[0].getBoundingClientRect().width : 0;
+            slideWidth = slides[0].getBoundingClientRect().width;
             moveToSlide(currentIndex);
         });
         
-        resetAutoPlay();
+        resetAutoPlay(); // Запускаємо автопрокрутку
     }
 
+    // --- Ініціалізуємо ОБИДВІ каруселі ---
     initCarousel('.bonus-carousel-wrapper');
     initCarousel('.testimonial-carousel-wrapper');
 
     // --- Логіка для плаваючої кнопки ---
     const fabToggle = document.getElementById('fab-toggle');
     const fabWrapper = document.querySelector('.fab-wrapper');
+
     if (fabToggle && fabWrapper) {
         fabToggle.addEventListener('click', () => {
             fabWrapper.classList.toggle('active');
         });
     }
 
-    // --- Логіка для ВІДПРАВКИ КОНТАКТНОЇ ФОРМИ ---
+    // --- Логіка для контактної форми ---
     const contactForm = document.getElementById('contact-form');
     if (contactForm) {
-        contactForm.addEventListener('submit', function(event) {
+        contactForm.addEventListener('submit', async (event) => {
             event.preventDefault();
             
-            const feedbackElement = contactForm.parentElement.querySelector('.form-feedback');
-            if (!feedbackElement) {
-                console.error("Feedback element not found");
-                return;
-            }
-
-            const submitButton = contactForm.querySelector('button[type="submit"]');
-            const formData = {
-                situation: contactForm.querySelector('#situation').value,
-                name: contactForm.querySelector('#name').value,
-                phone: contactForm.querySelector('#phone').value,
+            const formData = new FormData(contactForm);
+            const data = {
+                situation: formData.get('situation'),
+                name: formData.get('name'),
+                phone: formData.get('phone')
             };
-            const csrfToken = contactForm.querySelector('[name=csrfmiddlewaretoken]').value;
 
-            submitButton.disabled = true;
-            submitButton.textContent = 'Відправка...';
+            try {
+                const response = await fetch('/api/submit-form/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    },
+                    body: JSON.stringify(data)
+                });
 
-            fetch('/api/submit-form/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => {
-                if (response.ok) return response.json();
-                throw new Error('Network response was not ok.');
-            })
-            .then(data => {
-                if (data.status === 'success') {
-                    feedbackElement.style.color = 'var(--accent-color)';
-                    feedbackElement.textContent = 'Дякуємо! Вашу заявку успішно відправлено.';
+                const result = await response.json();
+                
+                const feedback = document.querySelector('.form-feedback');
+                if (result.status === 'success') {
+                    feedback.innerHTML = '<div class="thank-you-message"><h4>Дякуємо за заявку!</h4><p>Ми зв\'яжемося з вами найближчим часом.</p></div>';
                     contactForm.reset();
                 } else {
-                    feedbackElement.style.color = 'red';
-                    feedbackElement.textContent = 'Сталася помилка. Спробуйте ще раз.';
+                    feedback.innerHTML = '<div class="error-message"><p>Помилка: ' + result.message + '</p></div>';
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                feedbackElement.style.color = 'red';
-                feedbackElement.textContent = 'Сталася помилка мережі. Перевірте з\'єднання.';
-            })
-            .finally(() => {
-                submitButton.disabled = false;
-                submitButton.textContent = 'Написати';
-            });
+            } catch (error) {
+                const feedback = document.querySelector('.form-feedback');
+                feedback.innerHTML = '<div class="error-message"><p>Помилка з\'єднання. Спробуйте ще раз.</p></div>';
+            }
         });
     }
 
-    // --- Логіка для КНОПКИ "РОЗГОРНУТИ" (Опис послуг) ---
-    const expandableWrappers = document.querySelectorAll('.expandable-text-wrapper');
-    expandableWrappers.forEach(wrapper => {
-        const textBlock = wrapper.querySelector('.expandable');
-        const button = wrapper.querySelector('.read-more-btn');
-
-        if (textBlock && button) {
-            if (textBlock.scrollHeight <= 105) {
-                button.style.display = 'none';
-            }
-            button.addEventListener('click', () => {
-                textBlock.classList.toggle('expanded');
-                button.textContent = textBlock.classList.contains('expanded') ? 'Згорнути' : 'Розгорнути';
-            });
-        }
-    });
-    
-    // --- Логіка для РОЗГОРТАННЯ КАРТОК ПЕРЕВАГ ---
-    const advantageCards = document.querySelectorAll('.advantage-card');
-    advantageCards.forEach(card => {
-        const button = card.querySelector('.advantage-read-more');
-        if (button) {
-            button.addEventListener('click', (event) => {
-                event.stopPropagation(); 
-                
-                const isCurrentlyExpanded = card.classList.contains('is-expanded');
-
-                advantageCards.forEach(c => {
-                    c.classList.remove('is-expanded');
-                    const otherButton = c.querySelector('.advantage-read-more');
-                    if(otherButton) {
-                        otherButton.textContent = 'Детальніше';
-                    }
-                });
-
-                if (!isCurrentlyExpanded) {
-                    card.classList.add('is-expanded');
-                    button.textContent = 'Згорнути';
-                }
-            });
-        }
-    });
-
-    // --- ОНОВЛЕНА ЛОГІКА ДЛЯ КНОПКИ "ПОКАЗАТИ ВСІ / ЗГОРНУТИ" В РІШЕННЯХ ---
-    const resultsGrid = document.querySelector('.results-grid');
-    const showAllBtn = document.getElementById('show-all-results-btn');
-
-    if (resultsGrid && showAllBtn) {
-        const cards = Array.from(resultsGrid.children);
-        const initialShowCount = 3; 
-
-        const originalButtonText = showAllBtn.textContent;
-
-        const collapseList = () => {
-            cards.forEach((card, index) => {
-                if (index >= initialShowCount) {
-                    card.classList.add('is-hidden');
-                    card.classList.remove('is-visible');
-                }
-            });
-            showAllBtn.textContent = originalButtonText;
-            resultsGrid.classList.remove('is-all-showing');
-        };
-
-        const expandList = () => {
-             cards.forEach(card => {
-                card.classList.remove('is-hidden');
-                card.classList.add('is-visible');
-            });
-            showAllBtn.textContent = 'Згорнути';
-            resultsGrid.classList.add('is-all-showing');
-        };
-
-        if (cards.length > initialShowCount) {
-            collapseList();
-        } else {
-            showAllBtn.style.display = 'none';
-        }
-
-        showAllBtn.addEventListener('click', () => {
-            const isExpanded = resultsGrid.classList.contains('is-all-showing');
-            if (isExpanded) {
-                collapseList();
-            } else {
-                expandList();
+    // --- Логіка для кнопки "Показати всі результати" ---
+    const showAllResultsBtn = document.getElementById('show-all-results-btn');
+    if (showAllResultsBtn) {
+        showAllResultsBtn.addEventListener('click', () => {
+            const resultsGrid = document.querySelector('.results-grid');
+            if (resultsGrid) {
+                resultsGrid.style.maxHeight = 'none';
+                resultsGrid.style.overflow = 'visible';
+                showAllResultsBtn.style.display = 'none';
             }
         });
     }

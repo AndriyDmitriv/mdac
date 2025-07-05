@@ -24,7 +24,13 @@
 
     <div class="page-wrapper">
         <header class="main-header">
-            <div class="logo">{{ site_config.header_logo_text }}</div>
+            <div class="logo">
+                {% if site_config.header_logo_image %}
+                    <img src="{{ site_config.header_logo_image.url }}" alt="Логотип" class="logo-img" />
+                {% else %}
+                    {{ site_config.header_logo_text }}
+                {% endif %}
+            </div>
             <div id="text-carousel" class="carousel-text">
                 {% if header_carousel_texts %}<span>{{ header_carousel_texts.0 }}</span>{% endif %}
             </div>
@@ -32,13 +38,13 @@
         </header>
 
 <main class="main-content">
-    <div class="hero-content-block" {% if backgrounds.ALIMONY %}style="background-image: linear-gradient(rgba(26, 26, 26, 0.8), rgba(26, 26, 26, 0.8)), url({{ backgrounds.HOME_BANER }});"{% endif %}>
+    <div id="home" class="hero-content-block" {% if backgrounds.ALIMONY %}style="background-image: linear-gradient(rgba(26, 26, 26, 0.8), rgba(26, 26, 26, 0.8)), url({{ backgrounds.HOME_BANER }});"{% endif %}>
         
         <h1 class="hero-title">{{ hero.title }}</h1>
 
         <div class="actions">
-            <a href="{{ hero.button1_link }}" class="btn btn-outline">{{ hero.button1_text }}</a>
-            <a href="{{ hero.button2_link }}" class="btn btn-filled">{{ hero.button2_text }}</a>
+            <a href="#" id="open-contact-modal-divorce" class="btn btn-outline">{{ hero.button1_text }}</a>
+            <a href="#" id="open-contact-modal-alimony" class="btn btn-filled">{{ hero.button2_text }}</a>
         </div>
 
         <div class="contact-info">
@@ -62,8 +68,22 @@
 
         <h3 class="subsection-title">{{ site_config.packages_subtitle }}</h3>
         <div class="packages-grid">
+            {% for service in divorce_services %}
+            <div class="package-card">
+                <div class="package-card-visible">
+                {% if service.label %}
+                    <p class="package-label">{{ service.label }}</p>
+                {% endif %}
+                <h4 class="package-title">{{ service.title|linebreaksbr }}</h4>
+                <p class="package-price">{{ service.price|floatformat:"0" }} грн</p>
+                </div>
+                <div class="package-description-content">{{ service.details|linebreaksbr }}</div>
+                <button class="package-read-more" onclick="togglePackageDetails(this)">Детальніше</button>
             </div>
+            {% endfor %}
         </div>
+        <p class="fee-note">+ 1211,20 грн судовий збір, комісія банку та вартість пересилки документів</p>
+    </div>
 </section>
 
 <section id="alimony-info" class="service-section" {% if backgrounds.ALIMONY %}style="background-image: linear-gradient(rgba(26, 26, 26, 0.8), rgba(26, 26, 26, 0.8)), url({{ backgrounds.ALIMONY }});"{% endif %}>
@@ -71,7 +91,6 @@
         <h2 class="section-title">{{ site_config.alimony_section_title }}</h2>
         
         {% if alimony_info %}
-            <hr class="dotted-divider">
             <div class="expandable-text-wrapper">
                 <div class="intro-text expandable">
                      {{ alimony_info.description|linebreaksbr }}
@@ -85,25 +104,25 @@
             
             {% for service in alimony_services %}
             <div class="package-card">
+                <div class="package-card-visible">
                 {% if service.label %}
                     <p class="package-label">{{ service.label }}</p>
                 {% endif %}
                 <h4 class="package-title">{{ service.title|linebreaksbr }}</h4>
                 <p class="package-price">{{ service.price|floatformat:"0" }} грн</p>
-                <a href="#" class="details-link">Детальніше</a>
+                </div>
+                <div class="package-description-content">{{ service.details|linebreaksbr }}</div>
+                <button class="package-read-more" onclick="togglePackageDetails(this)">Детальніше</button>
             </div>
             {% endfor %}
         </div>
         
         {% if site_config.alimony_fee_note %}
             <p class="fee-note">{{ site_config.alimony_fee_note }}</p>
-            
+        {% else %}
+            <p class="fee-note">+ вартість пересилки документів</p>
         {% endif %}
-                </div>
-                    <p class="fee-note">+ 1211,20 грн судовий збір, комісія банку та вартість пересилки документів</p>
-                </div>
     </div>
-
 </section>
             
 <section id="advantages" class="service-section">
@@ -130,8 +149,9 @@
             {% endfor %}
 
         </div>
-            <p>
     </div>
+</section>
+
 <section id="results" class="service-section">
     <div class="container">
         <p class="section-subtitle">{{ site_config.results_section_subtitle }}</p>
@@ -158,7 +178,6 @@
             <section id="testimonials" class="promo-section" {% if backgrounds.TESTIMONIALS %}style="background-image: linear-gradient(rgba(26, 26, 26, 0.8), rgba(26, 26, 26, 0.8)), url({{ backgrounds.TESTIMONIALS }});"{% endif %}>
                 <div class="container">
                     <h2 class="section-title">{{ site_config.testimonials_section_title }}</h2>
-                    <hr class="dotted-divider">
                     <div class="testimonial-carousel-wrapper">
                         <div class="testimonial-carousel">
                             <div class="testimonial-carousel-track">
@@ -173,6 +192,9 @@
                         <button class="carousel-button prev"><i class="fa-solid fa-chevron-left"></i></button>
                         <button class="carousel-button next"><i class="fa-solid fa-chevron-right"></i></button>
                         <div class="carousel-dots"></div>
+                    </div>
+                    <div style="display: flex; justify-content: center; margin: 32px 0 0 0;">
+                        <button id="open-testimonial-modal" class="btn btn-filled" style="min-width:260px; font-size:1.15rem;">Залишити відгук</button>
                     </div>
                 </div>
             </section>
@@ -243,7 +265,7 @@
                                 <textarea id="situation" name="situation" rows="4" required></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="name">Ваше ім’я</label>
+                                <label for="name">Ваше ім'я</label>
                                 <input type="text" id="name" name="name" required>
                             </div>
                             <div class="form-group">
@@ -257,9 +279,15 @@
             </section>
         </main>
 
-        <footer class="main-footer">
+        <footer class="main-footer"{% if site_config.footer_background_image %} style="background-image: linear-gradient(rgba(26, 26, 26, 0.85), rgba(26, 26, 26, 0.85)), url('{{ site_config.footer_background_image.url }}'); background-size: cover; background-position: center;"{% endif %}>
             <div class="container">
-                <div class="footer-logo">{{ site_config.footer_logo_text }}</div>
+                <div class="footer-logo">
+                    {% if site_config.header_logo_image_footer %}
+                        <img src="{{ site_config.header_logo_image_footer.url }}" alt="Логотип" class="logo-img" />
+                    {% else %}
+                        {{ site_config.footer_logo_text }}
+                    {% endif %}
+                </div>
                 <p class="footer-tagline">{{ site_config.footer_tagline|linebreaksbr }}</p>
                 <div class="footer-contacts">
                     <h4 class="footer-heading">{{ site_config.footer_contacts_title }}</h4>
@@ -287,6 +315,229 @@
             <i class="fa-solid fa-comments icon-open"></i>
             <i class="fa-solid fa-xmark icon-close"></i>
         </button>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function togglePackageDetails(btn) {
+            const card = btn.closest('.package-card');
+            // Якщо вже розгорнуто — згортаємо
+            if (card.classList.contains('is-expanded')) {
+                card.classList.remove('is-expanded');
+                btn.textContent = 'Детальніше';
+                return;
+            }
+            // Згортаємо всі інші картки
+            document.querySelectorAll('.package-card.is-expanded').forEach(c => {
+                c.classList.remove('is-expanded');
+                const b = c.querySelector('.package-read-more');
+                if (b) b.textContent = 'Детальніше';
+            });
+            // Розгортаємо поточну
+            card.classList.add('is-expanded');
+            btn.textContent = 'Згорнути';
+        }
+
+        // Плавна прокрутка для якірних посилань меню
+        const menuLinks = document.querySelectorAll('.side-menu a[href^="#"], .main-header a[href^="#"]');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId && targetId.startsWith('#') && document.querySelector(targetId)) {
+                    e.preventDefault();
+                    document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+                    // Якщо меню мобільне — закриваємо
+                    const menu = document.getElementById('side-menu');
+                    if (menu && menu.classList.contains('active')) menu.classList.remove('active');
+                }
+            });
+        });
+
+        // Модалка для відгуку
+        const openTestimonialModal = document.getElementById('open-testimonial-modal');
+        const testimonialModal = document.getElementById('testimonial-modal');
+        const closeTestimonialModal = document.getElementById('close-testimonial-modal');
+        if (openTestimonialModal && testimonialModal && closeTestimonialModal) {
+            openTestimonialModal.addEventListener('click', () => {
+                testimonialModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+            closeTestimonialModal.addEventListener('click', () => {
+                testimonialModal.style.display = 'none';
+                document.body.style.overflow = '';
+            });
+            testimonialModal.addEventListener('click', (e) => {
+                if (e.target === testimonialModal) {
+                    testimonialModal.style.display = 'none';
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+
+        // AJAX для форми відгуку (модалка)
+        const testimonialForm = document.getElementById('testimonial-form');
+        if (testimonialForm) {
+            testimonialForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const feedback = document.getElementById('testimonial-feedback');
+                feedback.textContent = '';
+                const btn = testimonialForm.querySelector('button[type="submit"]');
+                btn.disabled = true;
+                btn.textContent = 'Відправка...';
+                const formData = new FormData(testimonialForm);
+                try {
+                    const response = await fetch(testimonialForm.action, {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+                        },
+                        body: formData
+                    });
+                    const data = await response.json();
+                    if (data.status === 'success') {
+                        feedback.style.color = 'green';
+                        feedback.textContent = data.message;
+                        testimonialForm.reset();
+                        setTimeout(() => {
+                            document.getElementById('testimonial-modal').style.display = 'none';
+                            document.body.style.overflow = '';
+                            feedback.textContent = '';
+                        }, 1800);
+                    } else {
+                        feedback.style.color = 'red';
+                        feedback.textContent = data.message || 'Сталася помилка.';
+                    }
+                } catch (err) {
+                    feedback.style.color = 'red';
+                    feedback.textContent = 'Сталася помилка при відправці.';
+                }
+                btn.disabled = false;
+                btn.textContent = 'Надіслати';
+            });
+        }
+
+        // Модалка для заявки ContactRequest
+        const openContactModalDivorce = document.getElementById('open-contact-modal-divorce');
+        const openContactModalAlimony = document.getElementById('open-contact-modal-alimony');
+        const contactModal = document.getElementById('contact-modal');
+        const closeContactModal = document.getElementById('close-contact-modal');
+        if (openContactModalDivorce && openContactModalAlimony && contactModal && closeContactModal) {
+            openContactModalDivorce.addEventListener('click', function(e) {
+                e.preventDefault();
+                contactModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+            openContactModalAlimony.addEventListener('click', function(e) {
+                e.preventDefault();
+                contactModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+            closeContactModal.addEventListener('click', function() {
+                contactModal.style.display = 'none';
+                document.body.style.overflow = '';
+            });
+            contactModal.addEventListener('click', function(e) {
+                if (e.target === contactModal) {
+                    contactModal.style.display = 'none';
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+        // AJAX для форми заявки ContactRequest
+        const contactModalForm = document.getElementById('contact-modal-form');
+        if (contactModalForm) {
+            contactModalForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const feedback = document.getElementById('contact-modal-feedback');
+                feedback.textContent = '';
+                const btn = contactModalForm.querySelector('button[type="submit"]');
+                btn.disabled = true;
+                btn.textContent = 'Відправка...';
+                const formData = new FormData(contactModalForm);
+                try {
+                    const response = await fetch(contactModalForm.action, {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            name: formData.get('name'),
+                            phone: formData.get('phone'),
+                            situation: formData.get('situation')
+                        })
+                    });
+                    const data = await response.json();
+                    if (data.status === 'success') {
+                        feedback.style.color = 'green';
+                        feedback.textContent = data.message;
+                        contactModalForm.reset();
+                        setTimeout(() => {
+                            contactModal.style.display = 'none';
+                            document.body.style.overflow = '';
+                            feedback.textContent = '';
+                        }, 1800);
+                    } else {
+                        feedback.style.color = 'red';
+                        feedback.textContent = data.message || 'Сталася помилка.';
+                    }
+                } catch (err) {
+                    feedback.style.color = 'red';
+                    feedback.textContent = 'Сталася помилка при відправці.';
+                }
+                btn.disabled = false;
+                btn.textContent = 'Надіслати';
+            });
+        }
+    });
+    </script>
+
+    <!-- Модальне вікно для форми відгуку -->
+    <div id="testimonial-modal" class="modal" style="display:none; position:fixed; z-index:10000; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); align-items:center; justify-content:center;">
+        <div class="modal-content" style="background:#222; padding:32px 24px; border-radius:16px; max-width:400px; width:90vw; margin:auto; position:relative; box-shadow:0 8px 32px rgba(0,0,0,0.3);">
+            <button id="close-testimonial-modal" style="position:absolute; top:12px; right:16px; background:none; border:none; color:#fff; font-size:2rem; cursor:pointer;">&times;</button>
+            <h3 class="form-title" style="color:#fff; text-align:center;">Залишити відгук</h3>
+            <form id="testimonial-form" method="post" action="/api/submit-testimonial/">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="testimonial-author" style="color:#fff;">Ваше ім'я</label>
+                    <input type="text" id="testimonial-author" name="author" required>
+                </div>
+                <div class="form-group">
+                    <label for="testimonial-text" style="color:#fff;">Ваш відгук</label>
+                    <textarea id="testimonial-text" name="text" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-filled">Надіслати</button>
+                <div id="testimonial-feedback" style="margin-top:15px;"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальне вікно для заявки ContactRequest -->
+    <div id="contact-modal" class="modal" style="display:none; position:fixed; z-index:10000; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); align-items:center; justify-content:center;">
+        <div class="modal-content" style="background:#222; padding:32px 24px; border-radius:16px; max-width:400px; width:90vw; margin:auto; position:relative; box-shadow:0 8px 32px rgba(0,0,0,0.3);">
+            <button id="close-contact-modal" style="position:absolute; top:12px; right:16px; background:none; border:none; color:#fff; font-size:2rem; cursor:pointer;">&times;</button>
+            <h3 class="form-title" style="color:#fff; text-align:center;">Залишити заявку</h3>
+            <form id="contact-modal-form" method="post" action="/api/submit-form/">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="contact-modal-name" style="color:#fff;">Ваше ім'я</label>
+                    <input type="text" id="contact-modal-name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact-modal-phone" style="color:#fff;">Ваш телефон</label>
+                    <input type="tel" id="contact-modal-phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact-modal-situation" style="color:#fff;">Опишіть коротко ситуацію</label>
+                    <textarea id="contact-modal-situation" name="situation" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-filled">Надіслати</button>
+                <div id="contact-modal-feedback" style="margin-top:15px;"></div>
+            </form>
+        </div>
     </div>
 
 </body>

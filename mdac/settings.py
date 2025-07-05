@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-f45+k$ux&n#$wb@!=m((*8ky8e%&732$iu-s4&s0=ht*bt=)ud
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['mdac-73749563213.europe-west3.run.app', 'rozluchennia-alimenty.com']
+ALLOWED_HOSTS = ['mdac-73749563213.europe-west3.run.app', 'rozluchennia-alimenty.com', 'localhost', '127.0.0.1']
 
 
 # Application definition

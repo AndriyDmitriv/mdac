@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8008:8000"
+    volumes:
+      - .:/app
+      - ./media:/app/media
+    environment:
+      - DEBUG=1
+      - DJANGO_SETTINGS_MODULE=mdac.settings
+    command: python manage.py runserver 0.0.0.0:8000 

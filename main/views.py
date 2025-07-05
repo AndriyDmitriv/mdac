@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 import json
 from .models import (
@@ -6,6 +6,24 @@ from .models import (
     ServiceCategoryInfo, Advantage, Result, Testimonial, AlgorithmStep, 
     FAQ, Bonus, ContactRequest, HeroBanner
 )
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
+import requests
+
+TELEGRAM_BOT_TOKEN = '7917246585:AAHMkFc-evJtNonTbUmRxbYxBwWh_Uj9kOw'
+TELEGRAM_CHAT_ID = '-4840238372'  # chat_id групи
+
+def send_telegram_notification(name, phone, situation):
+    message = f'📩 Нова заявка з сайту!\n\n👤 Імʼя: {name}\n📞 Телефон: {phone}\n📝 Ситуація: {situation}'
+    url = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage'
+    data = {
+        'chat_id': TELEGRAM_CHAT_ID,
+        'text': message,
+        'parse_mode': 'HTML',
+    }
+    try:
+        requests.post(url, data=data, timeout=5)
+    except Exception as e:
+        pass  # Не блокуємо основний функціонал
 
 # Ця функція тепер буде віддавати головну сторінку
 def index_view(request):
@@ -65,6 +83,9 @@ def submit_contact_form(request):
                 name=name,
                 phone_number=phone
             )
+
+            # Надсилаємо сповіщення у Telegram
+            send_telegram_notification(name, phone, situation)
             
             # Надсилаємо успішну відповідь
             return JsonResponse({'status': 'success', 'message': 'Заявку успішно відправлено!'})
@@ -74,3 +95,18 @@ def submit_contact_form(request):
     
     # Якщо це не POST-запит, повертаємо помилку
     return JsonResponse({'status': 'error', 'message': 'Неправильний метод запиту'}, status=405)
+
+@csrf_protect
+def submit_testimonial(request):
+    if request.method == 'POST':
+        author = request.POST.get('author', '').strip()
+        text = request.POST.get('text', '').strip()
+        if not author or not text:
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return JsonResponse({'status': 'error', 'message': 'Будь ласка, заповніть усі поля.'}, status=400)
+            return render(request, 'testimonial_result.html', {'message': 'Будь ласка, заповніть усі поля.'})
+        Testimonial.objects.create(author=author, text=text, is_published=False)
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            return JsonResponse({'status': 'success', 'message': 'Відгук надіслано! Після модерації він зʼявиться на сайті.'})
+        return render(request, 'testimonial_result.html', {'message': 'Відгук надіслано! Після модерації він зʼявиться на сайті.'})
+    return redirect('/')

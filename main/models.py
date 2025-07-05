@@ -3,6 +3,9 @@ from solo.models import SingletonModel
 
 class SiteConfiguration(SingletonModel):
     header_logo_text = models.CharField(max_length=50, default="ЛОГОТИП", verbose_name="Текст логотипу в хедері")
+    header_logo_image = models.ImageField(upload_to='logos/', blank=True, null=True, verbose_name="Картинка логотипу в хедері")
+    header_logo_image_footer = models.ImageField(upload_to='logos/', blank=True, null=True, verbose_name="Картинка логотипу в футері")
+    footer_background_image = models.ImageField(upload_to='backgrounds/', blank=True, null=True, verbose_name="Фонове зображення футера")
     header_carousel_text_1 = models.CharField(max_length=50, default="під ключ", verbose_name="Текст каруселі 1")
     header_carousel_text_2 = models.CharField(max_length=50, default="онлайн", verbose_name="Текст каруселі 2")
     header_carousel_text_3 = models.CharField(max_length=50, default="24/7", verbose_name="Текст каруселі 3")
@@ -26,7 +29,7 @@ class SiteConfiguration(SingletonModel):
     bonuses_section_title = models.CharField(max_length=100, default="АКЦІЇ ТА БОНУСИ", verbose_name="Заголовок секції 'Бонуси'")
     contact_form_title = models.CharField(max_length=100, default="Задати інше запитання", verbose_name="Заголовок контактної форми")
     contact_form_subtitle = models.TextField(verbose_name="Підзаголовок контактної форми")
-    
+    contact_form_button_text = models.CharField(max_length=50, default="Відправити", verbose_name="Текст кнопки контактної форми")
     def __str__(self):
         return "Налаштування Сайту"
 
@@ -88,6 +91,7 @@ class Service(models.Model):
     label = models.CharField(max_length=50, blank=True, null=True, verbose_name="Мітка, напр. «Під ключ»")
     category = models.CharField(max_length=10, choices=CATEGORY_CHOICES, verbose_name="Категорія")
     order = models.PositiveIntegerField(default=0, verbose_name="Порядок сортування")
+    details = models.TextField(blank=True, null=True, verbose_name="Детальний опис для кнопки 'Детальніше'")
     def __str__(self):
         return f"{self.get_category_display()} - {self.title}"
     class Meta:
